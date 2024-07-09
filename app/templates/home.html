@@ -3,11 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>CrowdSync</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
 </head>
 
 <body>
-    <p>text</p>
+    
+    <div class="top_bar"> 
+        <h1>CrowdSync</h1>
+    </div>
+
+    <div class="middle_bar">
+        <form method="POST">
+            {% if error %}
+            <p class="error">{{ error }}</p>
+            {% endif %}
+
+            <label for="Search"></label>
+            <input type="text" id="zip_city" name="zip_city" placeholder="Enter city or zipcode" required>
+            <input type="text" id="start_date" name="start_date" placeholder="Start date(MM/DD/YYYY)" required>
+            <input type="text" id="end_date" name="end_date" placeholder="End date(MM/DD/YYYY)" required>
+            <input type="text" id="query" name="query" placeholder="Search by artist, event or venue" required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class= "bottom_bar">
+        <img src="../static/concert.png" alt="concert image">
+    </div>
 </body>
 
 </html>
