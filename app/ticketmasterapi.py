@@ -49,7 +49,7 @@ def search_events(search):
     '''
     search_params = {
         "apikey": API_KEY,
-        "keyword": query,
+        "keyword": search,
         "size": 10  # Number of results to retrieve
     }
 
