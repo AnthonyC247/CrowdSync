@@ -21,7 +21,7 @@ print(API_KEY)
 print(API_SECRET)
 print(BASE_URL)
 #print(response.json())
-pprint(response.json())
+#pprint(response.json())
 
 def get_event_details(event_id):
     url = f"{BASE_URL}/{event_id}"
