@@ -11,20 +11,24 @@
     
     <div class="top_bar"> 
         <h1>CrowdSync</h1>
+        <p class="summary">Your go to place to find events including concerts, sports, arts, theater, and comedy shows in your area</p>
     </div>
 
     <div class="middle_bar">
+        <h2>Search events near you!</h2>
         <form method="POST">
             {% if error %}
             <p class="error">{{ error }}</p>
             {% endif %}
-
-            <label for="Search"></label>
-            <input type="text" id="zip_city" name="zip_city" placeholder="Enter city or zipcode" required>
-            <input type="text" id="start_date" name="start_date" placeholder="Start date(MM/DD/YYYY)" required>
-            <input type="text" id="end_date" name="end_date" placeholder="End date(MM/DD/YYYY)" required>
-            <input type="text" id="query" name="query" placeholder="Search by artist, event or venue" required>
-            <button type="submit">Search</button>
+            
+            <div class = "form_fields">
+                <label for="Search"></label>
+                <input type="text" id="zip_city" name="zip_city" placeholder="Enter city or zipcode" required>
+                <input type="text" id="start_date" name="start_date" placeholder="Start date(MM/DD/YYYY)" required>
+                <input type="text" id="end_date" name="end_date" placeholder="End date(MM/DD/YYYY)" required>
+                <input type="text" id="query" name="query" placeholder="Search by artist, event or venue" required>
+                <button type="submit">Search</button>
+            </div>
         </form>
     </div>
 
