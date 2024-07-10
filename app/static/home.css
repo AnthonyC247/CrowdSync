@@ -8,32 +8,75 @@ html, body {
     background-color: black;
     color: white;
     height: 10%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 40px;
+}
+
+h1 {
+    color:#227FF1;
+}
+.summary {
+    text-align: center;
+    
 }
 .middle_bar {
     background-color: #227FF1;
     color: white;
     height: 30%;
     display: flex;
+    flex-direction: column;
     justify-content: center; /* Center horizontally */
     align-items: center;     /* Center vertically */
 }
+
+h2 {
+    margin: 0;
+}
+
 form {
     display: flex;           /* Use flexbox for form layout */
+    flex-direction: column;     /* Arrange children horizontally */
+    align-items: center;     /* Align items in the center */
+    width: 80%;
+}
+
+.form_fields {
+    display: flex;           /* Use flexbox for form fields layout */
     flex-direction: row;     /* Arrange children horizontally */
     align-items: center;     /* Align items in the center */
+    width: 100%;             /* Make form-fields take the full width of the form */
+    margin: 0;
+    gap: 0;
 }
+
+.error {
+    color: #f3a712; 
+    font-size: large;             /* Set the text color to red */
+    margin-bottom: 10px;     /* Add some space below the error message */
+    text-align: center;      /* Center the error message */
+    width: 100%;             /* Make the error message take the full width of the form */
+}
+
 input, button {
-    width: auto;             /* Allow elements to resize based on content */
+    flex: 1;
     padding: 30px;           /* Increase padding for better appearance */
     font-size: 1rem;         /* Increase font size for better readability */
     margin: 0;               /* Remove default margin */
+
+}
+
+input::placeholder {
+    font-size: 0.8rem;
 }
 
 button {
+    height: 80px;
     background-color: white;
-    border: none ;
     cursor: pointer;
     transition-duration: 0.5s;
+    border: none;
 }
 
 button:hover {
