@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrowdSync</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='results.css') }}">
+</head>
+
+<body>
+    
+    <div class="top_bar"> 
+        <h1>CrowdSync</h1>
+    </div>
+
+    <div class="middle_bar">
+         <img src="../static/concert.jpg" alt="Top Event"> <!-- replace with image -->
+         <h2 id="search_title">Main title for search </h2>
+
+
+        <form method="GET">
+
+            <label for="Search"></label>
+            <input type="text" id="zip_city" name="zip_city" placeholder="Enter city or zipcode" required>
+            <input type="text" id="start_date" name="start_date" placeholder="Start date(MM/DD/YYYY)" required>
+            <input type="text" id="end_date" name="end_date" placeholder="End date(MM/DD/YYYY)" required>
+            <input type="text" id="query" name="query" placeholder="Search by artist, event or venue" required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class= "bottom_bar">
+        
+        <div id="results_box">
+            <h2 id="results_count">Number of results: 5</h2>
+            <div class="result">
+                <div class="date">August 15, 2024</div>
+                <div class="details">
+                    <h3>Sample Event </h3>
+                    <p>Venue: Sample Venue </p>
+                    <p>Location: Ohio</p>
+                </div>
+            </div>
+    
+            <div class="result">
+                <div class="date">August 19, 2024</div>
+                <div class="details">
+                    <h3>Sample Event</h3>
+                    <p>Venue: Sample Venue </p>
+                    <p>Location: Delaware</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
