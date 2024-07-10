@@ -43,6 +43,9 @@ def home():
         # return redirect(url_for('results'))
     return render_template('home.html')
 
+@app.route('/results', methods=["GET"])
+def results():
+    return render_template('results.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
