@@ -2,67 +2,94 @@ import requests
 import os
 import json
 from pprint import pprint
+from datetime import datetime
+from geopy.geocoders import Nominatim
+import geohash2
 from dotenv import load_dotenv
 load_dotenv()
 
 #Preqs for the TicketMaster API credentials defined in .env
-
 API_KEY = os.environ.get('API_KEY')
 API_SECRET = os.environ.get('API_SECRET')
 BASE_URL = "https://app.ticketmaster.com/discovery/v2/events"
-#BASE_URL = os.environ.get('BASE_URL')
 
-#BASE_URL = f"https://app.ticketmaster.com/discovery/v2/events.json?keyword='concert'&apikey={API_KEY}&description=1"
-#url:"https://app.ticketmaster.com/discovery/v2/events.json?size=1&apikey={apikey}", for reference
-
-response = requests.get(BASE_URL)
-
-print(API_KEY)
-print(API_SECRET)
-print(BASE_URL)
-#print(response.json())
-#pprint(response.json())
-
-def get_event_details(event_id):
-    url = f"{BASE_URL}/{event_id}"
-    search_params = {
-        "apikey": API_KEY
-    }
-    response = requests.get(url, params=search_params)
-
-    if response.status_code == 200:
-        event_data = response.json()
-        event_obj = {}
-        event_obj['name'] = event_data["name"]
-        event_obj['date'] = event_data["dates"]["start"]["localDate"]
-        event_obj['venue'] = event_data['_embedded']['venues'][0]['name']
-        attractions = event_data["_embedded"]["attractions"]
-        event_obj['attractions'] = [attractions[i]['name'] for i in range(len(attractions))]
-        event_obj['image'] = event_data['images'][0]['url']
-        return event_obj
+#turns zipcode into a geohash
+def get_location(zip_code):
+    try:
+        geolocator = Nominatim(user_agent="zip_to_latlon")
+        location = geolocator.geocode(f"{zip_code}, USA")
+        if location:
+            geohash = geohash2.encode(location.latitude, location.longitude, precision=9)
+            return geohash
+        else:
+            return None
+        
+    except Exception as e:
+        print(f"Error during geocoding: {e}")
+        return None, None
 
 
+def process_event_data(event_data):
+    final_event_dict = {'num_events': 0, 'event_list': {}}
 
-def search_events(search):
-    '''to search for any events using the string type, search
+    # Check if _embedded and events exist in event_data
+    if '_embedded' in event_data and 'events' in event_data['_embedded']:
+        events = event_data['_embedded']['events']
+        final_event_dict['num_events'] = len(events)
+        
+        for event in events:
+            event_name = event['name']
+            # Assume there's at least one venue
+            venue = event['_embedded']['venues'][0]
+            venue_name = venue['name']
+            venue_address = f"{venue['address']['line1']}, {venue['city']['name']}, {venue['state']['stateCode']} {venue['postalCode']}"
+            
+            final_event_dict['event_list'][event_name] = {
+                'event_name': event_name,
+                'distance': event.get('distance', None),
+                'images': event.get('images', []),
+                'venue_name': venue_name,
+                'venue_address': venue_address,
+                'dates': event['dates']
+            }
+    return final_event_dict
 
-    '''
+def search_events(zip_city, start_date, end_date, query):
+
+    #turns the start and end date into a valid format
+    start = datetime.strptime(start_date, "%m/%d/%Y")
+    end = datetime.strptime(end_date, "%m/%d/%Y")
+    formatted_start = start.strftime('%Y-%m-%dT%H:%M:%SZ')
+    formatted_end = end.strftime('%Y-%m-%dT%H:%M:%SZ')
+        
     search_params = {
         "apikey": API_KEY,
-        "keyword": search,
-        "size": 10  # Number of results to retrieve
+        "keyword": query,
+        "startDateTime": formatted_start,
+        "endDateTime": formatted_end,
+        "includeTBA": "yes",
+        "includeTBD": "yes",
+        "radius": "300",
+        "unit": "miles"
     }
 
+    #checks if a zipcode or city was provided
+    if zip_city.isdigit():
+        geohash = get_location(zip_city)
+        search_params["geoPoint"] = geohash
+    else:
+        search_params["city"] = zip_city
+    
     response = requests.get(BASE_URL, params=search_params)
 
     if response.status_code == 200:
-        data = response.json()
-        events = data["_embedded"]["events"]
-        for event in events:
-            event_id = event["id"]
-            print(get_event_details(event_id))
+        event_data = response.json()
+        if event_data.get('_embedded'):
+            event_info = process_event_data(event_data)
+            return event_info
+        else:
+           print("No events found.") 
     else:
-        print("Error:", response.status_code)
+        print(f"RESPONSE STATUS CODE: {response.status_code}")
+        print(f"RESPONSE TEXT: {response.text}")
 
-search = input("Type in a search: ")
-search_events(search)
