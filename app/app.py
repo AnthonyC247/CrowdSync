@@ -17,6 +17,12 @@ def validateInput(zip_city, start_date, end_date):
     except ValueError:
         return "Please enter the date in the correct format"
     
+    start = datetime.strptime(start_date, "%m/%d/%Y")
+    end = datetime.strptime(end_date, "%m/%d/%Y")
+
+    if end > start:
+        return "Error: start date must be before end date"
+    
     
 #default home page
 
@@ -25,8 +31,6 @@ def validateInput(zip_city, start_date, end_date):
 def home():
     if request.method == "POST":
         zip_city = request.form.get("zip_city")
-
-
         start_date = request.form.get("start_date")
         end_date = request.form.get("end_date")
         query = request.form.get("query")
