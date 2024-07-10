@@ -23,49 +23,69 @@ h1 {
     text-align: center;    
 }
 
+
+/* middle bar */
 .middle_bar {
     background-color: #227FF1;
     color: white;
     height: 30%;
     display: flex;
-    justify-content: flex-end; /* Center horizontally */
+    flex-direction: column;
+    justify-content: center; /* Center horizontally */
     align-items: center;     /* Center vertically */
-    padding: 0 20px;
 }
 
-.middle_bar img {
-    width: 20%;
-    height: 70%;
-    margin-right: 30px; /* space between form and image */
-}
-#search_title {
-    margin-right: 50px;
+h2 {
+    margin: 0;
 }
 
 form {
     display: flex;           /* Use flexbox for form layout */
+    flex-direction: column;     /* Arrange children horizontally */
+    align-items: center;     /* Align items in the center */
+    width: 80%;
+}
+
+.form_fields {
+    display: flex;           /* Use flexbox for form fields layout */
     flex-direction: row;     /* Arrange children horizontally */
     align-items: center;     /* Align items in the center */
+    width: 100%;             /* Make form-fields take the full width of the form */
+    margin: 0;
+    gap: 0;
+}
+
+.error {
+    color: #f3a712; 
+    font-size: large;             /* Set the text color to red */
+    margin-bottom: 10px;     /* Add some space below the error message */
+    text-align: center;      /* Center the error message */
+    width: 100%;             /* Make the error message take the full width of the form */
 }
 
 input, button {
-    width: auto;             /* Allow elements to resize based on content */
-    padding: 10px;           /* Increase padding for better appearance */
+    flex: 1;
+    padding: 30px;           /* Increase padding for better appearance */
     font-size: 1rem;         /* Increase font size for better readability */
     margin: 0;               /* Remove default margin */
+
+}
+
+input::placeholder {
+    font-size: 0.8rem;
 }
 
 button {
+    height: 80px;
     background-color: white;
-    border: none ;
     cursor: pointer;
     transition-duration: 0.5s;
+    border: none;
 }
 
 button:hover {
     background-color: #f3a712;
 }
-
 
 
 /* bottom bar */
@@ -101,15 +121,32 @@ button:hover {
     padding: 20px;
     margin-bottom: 20px;
     background-color: #ffffff;
-    box-shadow: 0 2px 8px #000807;
-    transition: transform 0.5s ease;
-    width: 100%;
-    max-width: 700px; 
+    box-shadow: 0 4px 8px #777; 
+    transition: transform 0.3s ease;
+    width: 800px;
+    max-width: 1000px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.result_text {
+    flex: 1;
+    padding-right: 20px; /* Add padding to separate text from image */
+}
+
+.result img {
+    max-width: 300px; /* Adjust image size as needed */
+    height: auto;
+    object-fit: cover;
+    border-radius: 2px; /* Rounded corners for image */
 }
 
 .result:hover {
-    transform: translateY(-3px);
+    transform: translateY(-5px); /* Slight lift on hover */
 }
+
+
 
 .date {
     font-size: 0.9rem;
