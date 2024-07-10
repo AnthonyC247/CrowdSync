@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrowdSync</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='results.css') }}">
+</head>
+
+<body>
+    
+    <div class="top_bar"> 
+        <h1>CrowdSync</h1>
+        <p class="summary">Your go to place to find events including concerts, sports, arts, theater, and comedy shows in your area</p>
+    </div>
+
+    <div class="middle_bar">
+        <h2>Search events near you!</h2>
+        <form method="POST">
+            {% if error %}
+            <p class="error">{{ error }}</p>
+            {% endif %}
+            
+            <div class = "form_fields">
+                <label for="Search"></label>
+                <input type="text" id="zip_city" name="zip_city" placeholder="Enter city or zipcode" required>
+                <input type="text" id="start_date" name="start_date" placeholder="Start date(MM/DD/YYYY)" required>
+                <input type="text" id="end_date" name="end_date" placeholder="End date(MM/DD/YYYY)" required>
+                <input type="text" id="query" name="query" placeholder="Search by artist, event or venue" required>
+                <button type="submit">Search</button>
+            </div>
+        </form>
+    </div>
+
+    <div class= "bottom_bar">
+        
+        <div id="results_box">
+            <h2 id="results_count">Number of results: 5</h2>
+            <!-- Loop through events and display each result -->
+            <!-- % for event in events % -->
+            <div class="result">
+                <div class="result_text">
+                    <p class="date">Date range</p>
+                    <h3> Event name </h3>
+                    <p class="distance">Distance: Sample Venue </p>
+                    <p>Venue Name: Ohio</p>
+                    <p>Venue Adress</p>
+                </div>
+                <img src = "../static/concert.jpg" alt="image"> <!--each search results image-->
+            </div>
+            </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

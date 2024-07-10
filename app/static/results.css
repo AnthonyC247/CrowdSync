@@ -1,0 +1,168 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+.top_bar {
+    background-color: black;
+    color: white;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 40px;
+}
+
+h1 {
+    color:#227FF1;
+    padding-left: 1%;
+}
+
+.summary {
+    text-align: center;    
+}
+
+
+/* middle bar */
+.middle_bar {
+    background-color: #227FF1;
+    color: white;
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center horizontally */
+    align-items: center;     /* Center vertically */
+}
+
+h2 {
+    margin: 0;
+}
+
+form {
+    display: flex;           /* Use flexbox for form layout */
+    flex-direction: column;     /* Arrange children horizontally */
+    align-items: center;     /* Align items in the center */
+    width: 80%;
+}
+
+.form_fields {
+    display: flex;           /* Use flexbox for form fields layout */
+    flex-direction: row;     /* Arrange children horizontally */
+    align-items: center;     /* Align items in the center */
+    width: 100%;             /* Make form-fields take the full width of the form */
+    margin: 0;
+    gap: 0;
+}
+
+.error {
+    color: #f3a712; 
+    font-size: large;             /* Set the text color to red */
+    margin-bottom: 10px;     /* Add some space below the error message */
+    text-align: center;      /* Center the error message */
+    width: 100%;             /* Make the error message take the full width of the form */
+}
+
+input, button {
+    flex: 1;
+    padding: 30px;           /* Increase padding for better appearance */
+    font-size: 1rem;         /* Increase font size for better readability */
+    margin: 0;               /* Remove default margin */
+
+}
+
+input::placeholder {
+    font-size: 0.8rem;
+}
+
+button {
+    height: 80px;
+    background-color: white;
+    cursor: pointer;
+    transition-duration: 0.5s;
+    border: none;
+}
+
+button:hover {
+    background-color: #f3a712;
+}
+
+
+/* bottom bar */
+.bottom_bar {
+    background-color: white;
+    color: black;
+    height: 60%;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;     
+}
+
+#results_count {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items:center; /* Center contents horizontally */
+    
+}
+
+#results_box {
+    width: 80%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center contents horizontally */
+}
+
+.result {
+    border: 1px solid #DB2B39;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px #777; 
+    transition: transform 0.3s ease;
+    width: 800px;
+    max-width: 1000px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.result_text {
+    flex: 1;
+    padding-right: 20px; /* Add padding to separate text from image */
+}
+
+.result img {
+    max-width: 300px; /* Adjust image size as needed */
+    height: auto;
+    object-fit: cover;
+    border-radius: 2px; /* Rounded corners for image */
+}
+
+.result:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+}
+
+
+
+.date {
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #777;
+}
+
+.details h3 {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.details p {
+    margin: 5px 0;
+    color: #555;
+}
+
+

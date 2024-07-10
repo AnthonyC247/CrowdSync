@@ -54,7 +54,6 @@ def results():
 
     return render_template('results.html', event_data=event_data)
 
-
 if __name__ == '__main__':
     app.run(debug=True)
 
