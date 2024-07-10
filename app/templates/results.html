@@ -35,22 +35,24 @@
     <div class= "bottom_bar">
         
         <div id="results_box">
-            <h2 id="results_count">Number of results: 5</h2>
-            <!-- Loop through events and display each result -->
-            <!-- % for event in events % -->
-            <div class="result">
-                <div class="result_text">
-                    <p class="date">Date range</p>
-                    <h3> Event name </h3>
-                    <p class="distance">Distance: Sample Venue </p>
-                    <p>Venue Name: Ohio</p>
-                    <p>Venue Adress</p>
-                </div>
-                <img src = "../static/concert.jpg" alt="image"> <!--each search results image-->
-            </div>
-            </div>
-            </div>
-            </div>
+            {% if event_info %}
+                <h2 id="results_count">Number of results: {{ event_info['num_events'] }}</h2>
+                <!-- Loop through events and display each result -->
+                {% for event in event_info['event_list'].values() %}
+                <div class="result">
+                    <div class="result_text">
+                        <p class="date"> Start date: {{ event['dates']['start']['localDate'] }}</p>
+                        <h3> {{ event['event_name'] }} </h3>
+                        <p class="distance">Distance: {{ event['distance'] }} mi</p>
+                        <p>{{ event['venue_name'] }}</p>
+                        <p>{{ event['venue_address'] }}</p>
+                    </div>
+                    <img src="../static/concert.jpg" alt="image"> <!--each search results image-->
+                </div>   
+                {% endfor %}
+            {% else %}
+                <p>No events found. Please try a different search.</p>
+            {% endif %}
         </div>
     </div>
 </body>
