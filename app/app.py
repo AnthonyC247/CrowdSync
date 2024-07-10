@@ -43,8 +43,18 @@ def home():
         # return redirect(url_for('results'))
     return render_template('home.html')
 
-@app.route('/results', methods=["GET"])
+@app.route('/results', methods=["GET", "POST"])
 def results():
+    if request.method == "POST":
+        zip_city = request.form.get("zip_city")
+        start_date = request.form.get("start_date")
+        end_date = request.form.get("end_date")
+        query = request.form.get("query")
+        
+        
+        errorstring = validateInput(zip_city, start_date, end_date)
+        if errorstring:
+            return render_template('results.html', error=errorstring)
     return render_template('results.html')
 
 if __name__ == '__main__':
