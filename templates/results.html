@@ -37,8 +37,8 @@
         <div id="results_box">
             {% if event_info %}
                 <h2 id="results_count">Number of results: {{ event_info['num_events'] }}</h2>
-                <!-- Loop through events and display each result -->
-                {% for event in event_info['event_list'].values() %}
+                <!-- Loop through events on the first page and display each result -->
+                {% for event in event_info['event_list'][1] %}
                 <div class="result_card" data-url="{{ event['event_url'] }}" style="cursor: pointer;">
                     <div class="result_text">
                         <h2> {{ event['event_name'] }} </h2>
@@ -50,7 +50,7 @@
                     {% if event['images'] and event['images'][0] %}
                     <img src="{{ event['images'][0]['url'] }}" alt="event_image"> <!--each search results image-->
                     {% else %}
-                    <img src="../static/concert.jpg" alt="default_image"> <!--default image-->
+                    <img src="{{ url_for('static', filename='concert.jpg') }}" alt="default_image"> <!--default image-->
                     {% endif %}
                 </div>
                 {% endfor %}
