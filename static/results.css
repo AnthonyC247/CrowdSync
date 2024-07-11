@@ -3,6 +3,7 @@ html, body {
     margin: 0;
     display: flex;
     flex-direction: column;
+
 }
 
 body {
@@ -12,7 +13,7 @@ body {
 .top_bar {
     background-color: black;
     color: white;
-    height: 10%;
+    max-height: 10%;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -122,7 +123,6 @@ button:hover {
     display: flex;
     flex-direction: column;
     align-items: center; /* Center contents horizontally */
-    padding: 20px;
 }
 
 .result_card {
@@ -134,7 +134,8 @@ button:hover {
     box-shadow: 0 4px 8px #777; 
     transition: transform 0.3s ease;
     width: 800px;
-    max-width: 1000px;
+    min-height: 200px;
+    height: 300px;
     display: flex;
     flex-direction: row; /* Ensure information and image are in a row */
     justify-content: space-between;
@@ -147,7 +148,7 @@ button:hover {
 }
 
 .result_card img {
-    max-width: 300px; /* Adjust image size as needed */
+    max-width: 250px; /* Adjust image size as needed */
     width: 100%;
     height: auto;
     object-fit: cover;
