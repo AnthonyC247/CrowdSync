@@ -19,7 +19,7 @@ def get_location(zip_code):
         geolocator = Nominatim(user_agent="zip_to_latlon")
         location = geolocator.geocode(f"{zip_code}, USA")
         if location:
-            geohash = geohash2.encode(location.latitude, location.longitude, precision=9)
+            geohash = geohash2.encode(location.latitude, location.longitude, precision=5)
             return geohash
         else:
             return None
