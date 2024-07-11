@@ -36,13 +36,22 @@ def get_location(zip_code):
 
 def process_event_data(event_data):
     final_event_dict = {'num_events': 0, 'event_list': {}}
+    unique_events = {}
 
     # Check if _embedded and events exist in event_data
     if '_embedded' in event_data and 'events' in event_data['_embedded']:
         events = event_data['_embedded']['events']
-        final_event_dict['num_events'] = len(events)
+        # pprint(events)
         
         for event in events:
+            #avoid duplicate events in counting results
+            event_id = event['name']
+            if event_id not in unique_events:
+                unique_events[event_id] = event
+            
+            final_event_dict['num_events'] = len(unique_events)
+            # print(final_event_dict['num_events'])
+
             event_name = event['name']
             # Assume there's at least one venue
             venue = event['_embedded']['venues'][0]
@@ -57,6 +66,7 @@ def process_event_data(event_data):
                 'venue_address': venue_address,
                 'dates': event['dates']
             }
+
     return final_event_dict
 
 def search_events(zip_city, start_date, end_date, query):
