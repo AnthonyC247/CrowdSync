@@ -27,7 +27,14 @@ def validateInput(zip_city, start_date, end_date):
 
     if end < start:
         return "Error: start date must be before end date"
-      
+
+# Custom Jinja2 filter
+def format_date(value):
+    date_obj = datetime.strptime(value, "%Y-%m-%d")
+    return date_obj.strftime("%m-%d-%Y")
+
+app.jinja_env.filters['format_date'] = format_date
+   
 #default home page
 @app.route("/", methods=["GET", "POST"])
 @app.route("/home", methods=["GET", "POST"])

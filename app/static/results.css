@@ -6,7 +6,7 @@ html, body {
 }
 
 body {
-    overflow: auto; 
+    overflow: auto;
 }
 
 .top_bar {
@@ -102,8 +102,7 @@ button:hover {
     height: 60%;
     display: flex;
     justify-content: center; /* Center horizontally */
-    align-items: center;       
-    
+    align-items: center;  
 }
 
 #results_count {
@@ -118,13 +117,15 @@ button:hover {
 #results_box {
     height: 70%;
     width: 80%;
+    height: 60%;
     max-width: 1200px;
     display: flex;
     flex-direction: column;
     align-items: center; /* Center contents horizontally */
+    padding: 20px;
 }
 
-.result {
+.result_card {
     border: 1px solid #DB2B39;
     border-radius: 8px;
     padding: 20px;
@@ -135,36 +136,30 @@ button:hover {
     width: 800px;
     max-width: 1000px;
     display: flex;
+    flex-direction: row; /* Ensure information and image are in a row */
     justify-content: space-between;
     align-items: center;
 }
 
 .result_text {
-    flex: 1;
+    flex: 2;
     padding-right: 20px; /* Add padding to separate text from image */
 }
 
-.result img {
+.result_card img {
     max-width: 300px; /* Adjust image size as needed */
+    width: 100%;
     height: auto;
     object-fit: cover;
     border-radius: 2px; /* Rounded corners for image */
+    flex: 1;
 }
 
-.result:hover {
+.result_card:hover {
     transform: translateY(-5px); /* Slight lift on hover */
 }
 
-
-
-.date {
-    font-size: 0.9rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: #777;
-}
-
-.details h3 {
+.details h2 {
     margin-top: 10px;
     margin-bottom: 5px;
 }
