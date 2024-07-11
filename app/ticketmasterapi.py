@@ -39,6 +39,7 @@ def process_event_data(event_data):
         
         for event in events:
             event_name = event['name']
+
             # Assume there's at least one venue
             venue = event['_embedded']['venues'][0]
             venue_name = venue['name']
@@ -50,7 +51,8 @@ def process_event_data(event_data):
                 'images': event.get('images', []),
                 'venue_name': venue_name,
                 'venue_address': venue_address,
-                'dates': event['dates']
+                'dates': event['dates'],
+                'event_url': event['url']
             }
     return final_event_dict
 

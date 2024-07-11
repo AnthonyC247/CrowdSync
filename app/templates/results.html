@@ -8,10 +8,9 @@
 </head>
 
 <body>
-    
-    <div class="top_bar"> 
+    <div class="top_bar">
         <h1>CrowdSync</h1>
-        <p class="summary">Your go to place to find events including concerts, sports, arts, theater, and comedy shows in your area</p>
+        <p class="summary">Your go-to place to find events including concerts, sports, arts, theater, and comedy shows in your area</p>
     </div>
 
     <div class="middle_bar">
@@ -20,8 +19,8 @@
             {% if error %}
             <p class="error">{{ error }}</p>
             {% endif %}
-            
-            <div class = "form_fields">
+
+            <div class="form_fields">
                 <label for="Search"></label>
                 <input type="text" id="zip_city" name="zip_city" placeholder="Enter city or zipcode" required>
                 <input type="text" id="start_date" name="start_date" placeholder="Start date(MM/DD/YYYY)" required>
@@ -32,29 +31,42 @@
         </form>
     </div>
 
-    <div class= "bottom_bar">
-        
+    <div class="bottom_bar">
         <div id="results_box">
             {% if event_info %}
                 <h2 id="results_count">Number of results: {{ event_info['num_events'] }}</h2>
                 <!-- Loop through events and display each result -->
                 {% for event in event_info['event_list'].values() %}
-                <div class="result">
+                <div class="result_card" data-url="{{ event['event_url'] }}" style="cursor: pointer;">
                     <div class="result_text">
-                        <p class="date"> Start date: {{ event['dates']['start']['localDate'] }}</p>
-                        <h3> {{ event['event_name'] }} </h3>
+                        <h2> {{ event['event_name'] }} </h2>
+                        <p><b>{{ event['venue_name'] }}</b></p>
+                        <p><em>{{ event['venue_address'] }}</em></p>
                         <p class="distance">Distance: {{ event['distance'] }} mi</p>
-                        <p>{{ event['venue_name'] }}</p>
-                        <p>{{ event['venue_address'] }}</p>
+                        <p class="date"> Start date: {{ event['dates']['start']['localDate'] | format_date }}</p>
                     </div>
-                    <img src="../static/concert.jpg" alt="image"> <!--each search results image-->
-                </div>   
+                    {% if event['images'] and event['images'][0] %}
+                    <img src="{{ event['images'][0]['url'] }}" alt="event_image"> <!--each search results image-->
+                    {% else %}
+                    <img src="../static/concert.jpg" alt="default_image"> <!--default image-->
+                    {% endif %}
+                </div>
                 {% endfor %}
             {% else %}
                 <p>No events found. Please try a different search.</p>
             {% endif %}
         </div>
     </div>
-</body>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.result_card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const url = this.getAttribute('data-url');
+                    window.open(url, '_blank');
+                });
+            });
+        });
+    </script>
+</body>
 </html>
