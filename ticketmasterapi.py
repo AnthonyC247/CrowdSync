@@ -38,10 +38,10 @@ def process_event_data(event_data):
     final_event_dict = {'num_events': 0, 'event_list': {}}
     unique_events = {}
 
+
     # Check if _embedded and events exist in event_data
     if '_embedded' in event_data and 'events' in event_data['_embedded']:
         events = event_data['_embedded']['events']
-        # pprint(events)
         
         for event in events:
             #avoid duplicate events in counting results
@@ -53,6 +53,7 @@ def process_event_data(event_data):
             # print(final_event_dict['num_events'])
 
             event_name = event['name']
+
             # Assume there's at least one venue
             venue = event['_embedded']['venues'][0]
             venue_name = venue['name']
@@ -64,9 +65,10 @@ def process_event_data(event_data):
                 'images': event.get('images', []),
                 'venue_name': venue_name,
                 'venue_address': venue_address,
-                'dates': event['dates']
-            }
 
+                'dates': event['dates'],
+                'event_url': event['url']
+            }
     return final_event_dict
 
 def search_events(zip_city, start_date, end_date, query):

@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from datetime import datetime
 from pprint import pprint
-from CrowdSync.ticketmasterapi import search_events
+from ticketmasterapi import search_events
 from flask_session import Session
 
 app = Flask(__name__)
@@ -27,7 +27,14 @@ def validateInput(zip_city, start_date, end_date):
 
     if end < start:
         return "Error: start date must be before end date"
-      
+
+# Custom Jinja2 filter
+def format_date(value):
+    date_obj = datetime.strptime(value, "%Y-%m-%d")
+    return date_obj.strftime("%m-%d-%Y")
+
+app.jinja_env.filters['format_date'] = format_date
+   
 #default home page
 @app.route("/", methods=["GET", "POST"])
 @app.route("/home", methods=["GET", "POST"])
@@ -68,6 +75,16 @@ def results():
     event_info = session.get('event_info')
     return render_template('results.html', event_info=event_info)
 
+@app.route("/update_server", methods=['POST'])
+def webhook():
+    if request.method == 'POST':
+        repo = git.Repo('/home/CrowdSync/CrowdSync')
+        origin = repo.remotes.origin
+        origin.pull()
+        return 'Updated PythonAnywhere successfully', 200
+    else:
+        return 'Wrong event type', 400
+
+
 if __name__ == '__main__':
     app.run(debug=True)
-
