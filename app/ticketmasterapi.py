@@ -24,7 +24,7 @@ def get_location(zip_code):
         location = geolocator.geocode(f"{zip_code}, USA")
         print(f'lat: {location.latitude}, long: {location.longitude}')
         if location:
-            geohash = geohash2.encode(location.latitude, location.longitude, precision=9)
+            geohash = geohash2.encode(location.latitude, location.longitude, precision=5)
             return geohash
         else:
             return None
