@@ -3,6 +3,8 @@ import os
 import json
 from pprint import pprint
 from datetime import datetime
+import certifi
+import ssl
 from geopy.geocoders import Nominatim
 import geohash2
 from dotenv import load_dotenv
@@ -16,10 +18,13 @@ BASE_URL = "https://app.ticketmaster.com/discovery/v2/events"
 #turns zipcode into a geohash
 def get_location(zip_code):
     try:
-        geolocator = Nominatim(user_agent="zip_to_latlon")
+        print(f'zipcode {zip_code}')
+        ctx = ssl.create_default_context(cafile=certifi.where())
+        geolocator = Nominatim(user_agent="zip_to_latlon", ssl_context=ctx)
         location = geolocator.geocode(f"{zip_code}, USA")
+        print(f'lat: {location.latitude}, long: {location.longitude}')
         if location:
-            geohash = geohash2.encode(location.latitude, location.longitude, precision=9)
+            geohash = geohash2.encode(location.latitude, location.longitude, precision=5)
             return geohash
         else:
             return None
