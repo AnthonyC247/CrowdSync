@@ -3,6 +3,7 @@ from datetime import datetime
 from pprint import pprint
 from ticketmasterapi import search_events
 from flask_session import Session
+import git
 
 app = Flask(__name__)
 app.config['SESSION_TYPE'] = 'filesystem'  # Configure session to use the filesystem
