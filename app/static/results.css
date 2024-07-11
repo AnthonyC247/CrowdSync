@@ -8,6 +8,7 @@ html, body {
 body {
     overflow: auto;
 }
+
 .top_bar {
     background-color: black;
     color: white;
@@ -37,6 +38,7 @@ h1 {
     flex-direction: column;
     justify-content: center; /* Center horizontally */
     align-items: center;     /* Center vertically */
+    
 }
 
 h2 {
@@ -94,6 +96,7 @@ button:hover {
 
 /* bottom bar */
 .bottom_bar {
+    height: 70%;
     background-color: white;
     color: black;
     height: 60%;
@@ -112,6 +115,7 @@ button:hover {
 }
 
 #results_box {
+    height: 70%;
     width: 80%;
     height: 60%;
     max-width: 1200px;
