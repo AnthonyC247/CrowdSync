@@ -65,7 +65,6 @@ def process_event_data(event_data):
                 'images': event.get('images', []),
                 'venue_name': venue_name,
                 'venue_address': venue_address,
-
                 'dates': event['dates'],
                 'event_url': event['url']
             }

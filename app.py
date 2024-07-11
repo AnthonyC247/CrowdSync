@@ -5,6 +5,7 @@ from ticketmasterapi import search_events
 from flask_session import Session
 import git
 
+
 app = Flask(__name__)
 app.config['SESSION_TYPE'] = 'filesystem'  # Configure session to use the filesystem
 Session(app)
@@ -76,6 +77,8 @@ def results():
     event_info = session.get('event_info')
     return render_template('results.html', event_info=event_info)
 
+
+
 @app.route("/update_server", methods=['POST'])
 def webhook():
     if request.method == 'POST':
@@ -89,3 +92,4 @@ def webhook():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
