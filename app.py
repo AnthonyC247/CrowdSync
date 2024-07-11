@@ -37,7 +37,7 @@ def format_date(value):
 
 app.jinja_env.filters['format_date'] = format_date
    
-#default home page
+# Default home page
 @app.route("/", methods=["GET", "POST"])
 @app.route("/home", methods=["GET", "POST"])
 def home():
@@ -47,49 +47,44 @@ def home():
         end_date = request.form.get("end_date")
         query = request.form.get("query")
         
-        
         errorstring = validateInput(zip_city, start_date, end_date)
         if errorstring:
             return render_template('home.html', error=errorstring)
 
-        event_info= search_events(zip_city, start_date, end_date, query)
+        event_info = search_events(zip_city, start_date, end_date, query)
         session['event_info'] = event_info
         return redirect(url_for('results'))
-    
+
     return render_template('home.html')
 
 @app.route("/results", methods=["GET", "POST"])
-def results():
+@app.route("/results/<int:page>", methods=["GET", "POST"])
+def results(page=1):
     if request.method == "POST":
-        zip_city = request.form.get("zip_city")
-        start_date = request.form.get("start_date")
-        end_date = request.form.get("end_date")
-        query = request.form.get("query")
-        
-        errorstring = validateInput(zip_city, start_date, end_date)
-        if errorstring:
-            return render_template('results.html', error=errorstring)
-
-        event_info= search_events(zip_city, start_date, end_date, query)
-        session['event_info'] = event_info
-        return redirect(url_for('results'))
+        if request.form['button'] == 'prevPage':
+            page = max(page - 1, 1)
+        elif request.form['button'] == 'nextPage':
+            page += 1
+        return redirect(url_for("pagination", pageNumber=page))
     
+    # Handle GET request to show results page
     event_info = session.get('event_info')
-    return render_template('results.html', event_info=event_info)
+    return render_template('results.html', event_info=event_info, page=page)
 
+@app.route("/results/<int:pageNumber>", methods=["POST"])
+def pagination(pageNumber):
+    zip_city = session['event_info']['zip_city']
+    start_date = session['event_info']['start_date']
+    end_date = session['event_info']['end_date']
+    query = session['event_info']['query']
+    
+    errorstring = validateInput(zip_city, start_date, end_date)
+    if errorstring:
+        return render_template('results.html', error=errorstring)
 
-
-@app.route("/update_server", methods=['POST'])
-def webhook():
-    if request.method == 'POST':
-        repo = git.Repo('/home/CrowdSync/CrowdSync')
-        origin = repo.remotes.origin
-        origin.pull()
-        return 'Updated PythonAnywhere successfully', 200
-    else:
-        return 'Wrong event type', 400
-
+    event_info = search_events(zip_city, start_date, end_date, query, pageNumber)
+    session['event_info'] = event_info
+    return redirect(url_for('results', page=pageNumber))
 
 if __name__ == '__main__':
     app.run(debug=True)
-

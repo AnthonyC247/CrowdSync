@@ -4,11 +4,9 @@ html, body {
     display: flex;
     flex-direction: column;
 }
-
 body {
     overflow: auto;
 }
-
 .top_bar {
     background-color: black;
     color: white;
@@ -18,17 +16,13 @@ body {
     align-items: center;
     gap: 40px;
 }
-
 h1 {
     color:#227FF1;
     padding-left: 1%;
 }
-
 .summary {
-    text-align: center;    
+    text-align: center;
 }
-
-
 /* middle bar */
 .middle_bar {
     background-color: #227FF1;
@@ -38,20 +32,17 @@ h1 {
     flex-direction: column;
     justify-content: center; /* Center horizontally */
     align-items: center;     /* Center vertically */
-    
+    padding-bottom: 20px;    /* Add padding to the bottom */
 }
-
 h2 {
     margin: 0;
 }
-
-form {
+#search_form {
     display: flex;           /* Use flexbox for form layout */
-    flex-direction: column;     /* Arrange children horizontally */
+    flex-direction: column;  /* Arrange children horizontally */
     align-items: center;     /* Align items in the center */
     width: 80%;
 }
-
 .form_fields {
     display: flex;           /* Use flexbox for form fields layout */
     flex-direction: row;     /* Arrange children horizontally */
@@ -60,27 +51,22 @@ form {
     margin: 0;
     gap: 0;
 }
-
 .error {
-    color: #f3a712; 
+    color: #F3A712;
     font-size: large;             /* Set the text color to red */
     margin-bottom: 10px;     /* Add some space below the error message */
     text-align: center;      /* Center the error message */
     width: 100%;             /* Make the error message take the full width of the form */
 }
-
 input, button {
     flex: 1;
     padding: 30px;           /* Increase padding for better appearance */
     font-size: 1rem;         /* Increase font size for better readability */
     margin: 0;               /* Remove default margin */
-
 }
-
 input::placeholder {
     font-size: 0.8rem;
 }
-
 button {
     height: 80px;
     background-color: white;
@@ -88,49 +74,40 @@ button {
     transition-duration: 0.5s;
     border: none;
 }
-
 button:hover {
-    background-color: #f3a712;
+    background-color: #F3A712;
 }
-
-
 /* bottom bar */
 .bottom_bar {
-    height: 70%;
     background-color: white;
     color: black;
-    height: 60%;
+    flex: 1;                 /* Take up remaining space */
     display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center;  
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;       /* Add padding to the top */
 }
-
 #results_count {
     font-size: 1.2rem;
     margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items:center; /* Center contents horizontally */
-    
 }
-
 #results_box {
-    height: 70%;
     width: 80%;
-    height: 60%;
     max-width: 1200px;
     display: flex;
     flex-direction: column;
     align-items: center; /* Center contents horizontally */
+    overflow-y: auto;    /* Scrollable content */
+    flex: 1;             /* Take up remaining space in bottom_bar */
+    padding-top: 20px;   /* Add padding to the top */
 }
-
 .result_card {
     border: 1px solid #DB2B39;
     border-radius: 8px;
     padding: 20px;
     margin-bottom: 20px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 8px #777; 
+    background-color: #FFFFFF;
+    box-shadow: 0 4px 8px #777;
     transition: transform 0.3s ease;
     width: 800px;
     min-height: 200px;
@@ -140,12 +117,10 @@ button:hover {
     justify-content: space-between;
     align-items: center;
 }
-
 .result_text {
     flex: 2;
     padding-right: 20px; /* Add padding to separate text from image */
 }
-
 .result_card img {
     max-width: 250px; /* Adjust image size as needed */
     width: 100%;
@@ -154,18 +129,50 @@ button:hover {
     border-radius: 2px; /* Rounded corners for image */
     flex: 1;
 }
-
 .result_card:hover {
     transform: translateY(-5px); /* Slight lift on hover */
 }
-
 .details h2 {
     margin-top: 10px;
     margin-bottom: 5px;
 }
-
 .details p {
     margin: 5px 0;
     color: #555;
 }
+/* pagination part */
+.pagination {
+    width: auto;
+    background-color: white;
+    align-items: center;
+    margin-top: 20px;
+    padding-bottom: 20px;
+}
 
+#paginationForm{
+    display: flex;
+    flex-direction: row;
+}
+.pagination button {
+    padding: 10px 20px;
+    margin: 0 5px;
+    width: 100px;
+    height: 50px;
+    background-color: #227FF1;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.pagination button:hover {
+    background-color: #F3A712;
+}
+.pagination input {
+    width: 50px;
+    text-align: center;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin: 0 5px;
+}
