@@ -1,8 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from datetime import datetime
 from pprint import pprint
 from ticketmasterapi import search_events
 from flask_session import Session
+import git
+
 
 app = Flask(__name__)
 app.config['SESSION_TYPE'] = 'filesystem'  # Configure session to use the filesystem
@@ -74,6 +76,19 @@ def results():
     
     event_info = session.get('event_info')
     return render_template('results.html', event_info=event_info)
+
+
+
+@app.route("/update_server", methods=['POST'])
+def webhook():
+    if request.method == 'POST':
+        repo = git.Repo('/home/CrowdSync/CrowdSync')
+        origin = repo.remotes.origin
+        origin.pull()
+        return 'Updated PythonAnywhere successfully', 200
+    else:
+        return 'Wrong event type', 400
+
 
 if __name__ == '__main__':
     app.run(debug=True)
