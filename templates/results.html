@@ -69,6 +69,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Pagination form submission handling
             document.getElementById('paginationForm').addEventListener('submit', function(event) {
                 event.preventDefault(); // Prevent default form submission
     
@@ -76,15 +77,15 @@
                 let pageNumber;
     
                 if (buttonValue === 'prevPage') {
-                    pageNumber = document.getElementById('prevPage').value;
+                    pageNumber = parseInt(document.getElementById('prevPage').value, 10);
                 } else if (buttonValue === 'nextPage') {
-                    pageNumber = document.getElementById('nextPage').value;
+                    pageNumber = parseInt(document.getElementById('nextPage').value, 10);
                 } else {
-                    pageNumber = document.getElementById('pageNumber').value.trim(); // Trim to remove any extra spaces
+                    pageNumber = parseInt(document.getElementById('pageNumber').value.trim(), 10); // Trim to remove any extra spaces
                 }
     
                 // Validate that pageNumber is a positive integer
-                if (!pageNumber.match(/^[1-9]\d*$/)) {
+                if (isNaN(pageNumber) || pageNumber < 1) {
                     alert('Please enter a valid page number.');
                     return;
                 }
@@ -92,9 +93,18 @@
                 const url = `/results/${pageNumber}`;
                 window.location.href = url; // Redirect to the specified page number
             });
+    
+            // Event card click handling
+            document.querySelectorAll('.result_card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const url = this.getAttribute('data-url');
+                    window.open(url, '_blank'); // Open the event URL in a new window
+                });
+            });
         });
     </script>
     
     
+
 </body>
 </html>
