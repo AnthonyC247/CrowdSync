@@ -19,6 +19,7 @@ CrowdSync is a Flask-based web application designed to help users find and explo
 - `static/`: Directory containing static files such as CSS and images.
 
 ## Usage
+#### For using the deployed project
 1. Navigate to the CrowdSync homepage.
 2. Enter the required details in the search form:
   -City or Zipcode
@@ -30,7 +31,7 @@ CrowdSync is a Flask-based web application designed to help users find and explo
 5. Click on an event card to open the Ticketmaster page for more details and to purchase tickets.
 
 ## Setup
-
+#### For running locally / deployed site is down
 1. **Clone the repository:**
    ```sh
    git clone https://github.com/your-username/crowdsync.git
@@ -48,3 +49,5 @@ CrowdSync is a Flask-based web application designed to help users find and explo
    ```sh
    python app.py
    The application will be accessible at http://127.0.0.1:5000/.
+
+Feel free to explore and enjoy finding events with CrowdSync! If you have any questions or need assistance feel free to checkout the presentation and please don't hesitate to reach out.
