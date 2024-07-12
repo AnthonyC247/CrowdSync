@@ -6,21 +6,17 @@
     <title>CrowdSync</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='results.css') }}">
 </head>
-
 <body>
-
     <div class="top_bar">
         <h1>CrowdSync</h1>
         <p class="summary">Your go-to place to find events including concerts, sports, arts, theater, and comedy shows in your area</p>
     </div>
-
     <div class="middle_bar">
         <h2>Search events near you!</h2>
-        <form method="POST">
+        <form id="search_form" method="POST">
             {% if error %}
             <p class="error">{{ error }}</p>
             {% endif %}
-
             <div class="form_fields">
                 <label for="Search"></label>
                 <input type="text" id="zip_city" name="zip_city" placeholder="Enter city or zipcode" required>
@@ -31,43 +27,84 @@
             </div>
         </form>
     </div>
-
-
     <div class="bottom_bar">
         <div id="results_box">
-            {% if event_info %}
+            {% if event_list %}
                 <h2 id="results_count">Number of results: {{ event_info['num_events'] }}</h2>
                 <!-- Loop through events and display each result -->
-                {% for event in event_info['event_list'].values() %}
-                <div class="result_card" data-url="{{ event['event_url'] }}" style="cursor: pointer;">
-                    <div class="result_text">
-                        <h2> {{ event['event_name'] }} </h2>
-                        <p><b>{{ event['venue_name'] }}</b></p>
-                        <p><em>{{ event['venue_address'] }}</em></p>
-                        <p class="distance">Distance: {{ event['distance'] }} mi</p>
-                        <p class="date"> Start date: {{ event['dates']['start']['localDate'] | format_date }}</p>
+                {% for event in event_list %}
+                    <div class="result_card" data-url="{{ event['event_url'] }}" style="cursor: pointer;">
+                        <div class="result_text">
+                            <h2>{{ event['event_name'] }}</h2>
+                            <p><b>{{ event['venue_name'] }}</b></p>
+                            <p><em>{{ event['venue_address'] }}</em></p>
+                            <p class="distance">Distance: {{ event['distance'] }} mi</p>
+                            {% if event['dates'] and event['dates']['start'] and event['dates']['start']['localDate'] %}
+                                <p class="date"> Start date: {{ event['dates']['start']['localDate'] | format_date }}</p>
+                            {% endif %}
+                        </div>
+                        {% if event['images'] and event['images'][0] %}
+                            <img src="{{ event['images'][0]['url'] }}" alt="event_image">
+                        {% else %}
+                            <img src="../static/concert.jpg" alt="default_image">
+                        {% endif %}
                     </div>
-                    {% if event['images'] and event['images'][0] %}
-                    <img src="{{ event['images'][0]['url'] }}" alt="event_image"> <!--each search results image-->
-                    {% else %}
-                    <img src="../static/concert.jpg" alt="default_image"> <!--default image-->
-                    {% endif %}
-                </div>
                 {% endfor %}
             {% else %}
                 <p>No events found. Please try a different search.</p>
             {% endif %}
         </div>
-    </div>
+        <div class="pagination">
+            <form id="paginationForm" method="POST" action="{{ url_for('pagination', pageNumber=page) }}">
+                <button type="submit" name="button" value="prevPage">Prev</button>
+                <input type="hidden" id="prevPage" name="prevPage" value="{{ page - 1 }}">
+                <input type="number" id="pageNumber" name="pageNumber" value="{{ page }}" min="1">
+                {% if page < max_page %}
+                    <button type="submit" name="button" value="nextPage">Next</button>
+                    <input type="hidden" id="nextPage" name="nextPage" value="{{ page + 1 }}">
+                {% endif %}
+            </form>
+        </div>
+    </div>       
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Pagination form submission handling
+            document.getElementById('paginationForm').addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent default form submission
+    
+                const buttonValue = event.submitter.value;
+                let pageNumber;
+    
+                if (buttonValue === 'prevPage') {
+                    pageNumber = parseInt(document.getElementById('prevPage').value, 10);
+                } else if (buttonValue === 'nextPage') {
+                    pageNumber = parseInt(document.getElementById('nextPage').value, 10);
+                } else {
+                    pageNumber = parseInt(document.getElementById('pageNumber').value.trim(), 10); // Trim to remove any extra spaces
+                }
+    
+                // Validate that pageNumber is a positive integer
+                if (isNaN(pageNumber) || pageNumber < 1) {
+                    alert('Please enter a valid page number.');
+                    return;
+                }
+    
+                const url = `/results/${pageNumber}`;
+                window.location.href = url; // Redirect to the specified page number
+            });
+    
+            // Event card click handling
             document.querySelectorAll('.result_card').forEach(card => {
                 card.addEventListener('click', function() {
                     const url = this.getAttribute('data-url');
-                    window.open(url, '_blank');
+                    window.open(url, '_blank'); // Open the event URL in a new window
                 });
             });
         });
     </script>
+    
+    
+
 </body>
 </html>

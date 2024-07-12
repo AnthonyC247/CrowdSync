@@ -37,7 +37,6 @@ def format_date(value):
 
 app.jinja_env.filters['format_date'] = format_date
    
-#default home page
 @app.route("/", methods=["GET", "POST"])
 @app.route("/home", methods=["GET", "POST"])
 def home():
@@ -47,49 +46,86 @@ def home():
         end_date = request.form.get("end_date")
         query = request.form.get("query")
         
-        
         errorstring = validateInput(zip_city, start_date, end_date)
         if errorstring:
             return render_template('home.html', error=errorstring)
 
-        event_info= search_events(zip_city, start_date, end_date, query)
-        session['event_info'] = event_info
-        return redirect(url_for('results'))
-    
+        event_info = search_events(zip_city, start_date, end_date, query)
+        session['event_info'] = event_info  # Store event_info in session
+        return redirect(url_for('results', page=1))
+
     return render_template('home.html')
 
-@app.route("/results", methods=["GET", "POST"])
-def results():
+
+
+@app.route("/results/<int:page>", methods=["GET", "POST"])
+def results(page=1):
     if request.method == "POST":
-        zip_city = request.form.get("zip_city")
-        start_date = request.form.get("start_date")
-        end_date = request.form.get("end_date")
-        query = request.form.get("query")
-        
-        errorstring = validateInput(zip_city, start_date, end_date)
-        if errorstring:
-            return render_template('results.html', error=errorstring)
+        if 'pageNumber' in request.form:
+            try:
+                pageNumber = int(request.form['pageNumber'])
+            except ValueError:
+                flash('Please enter a valid page number.', 'error')
+                return redirect(url_for('results', page=page))
 
-        event_info= search_events(zip_city, start_date, end_date, query)
-        session['event_info'] = event_info
-        return redirect(url_for('results'))
-    
+            # Ensure page number is within valid range
+            event_info = session.get('event_info')
+            if event_info:
+                num_events = event_info.get('num_events', 0)
+                max_page = (num_events + 19) // 20  # Calculate maximum page number
+                pageNumber = min(max(1, pageNumber), max_page)
+
+            return redirect(url_for('pagination', pageNumber=pageNumber))
+
+    # Ensure event_info is in the session and retrieve it
     event_info = session.get('event_info')
-    return render_template('results.html', event_info=event_info)
+    if not event_info:
+        flash('Event information not found. Please perform a search again.', 'error')
+        return redirect(url_for('home'))
+
+    num_events = event_info.get('num_events', 0)
+    max_page = (num_events + 19) // 20  # Calculate maximum page number
+
+    # Adjust page number to ensure it does not exceed max_page
+    page = min(page, max_page)
+
+    # Fetch events for the current page
+    event_list = event_info.get('event_list', {}).get(page, [])
+
+    return render_template('results.html', event_list=event_list, event_info=event_info, page=page, max_page=max_page)
 
 
+@app.route("/results/<int:pageNumber>", methods=["POST"])
+def pagination(pageNumber):
+    event_info = session.get('event_info')
+    if not event_info:
+        flash('Event information not found. Please perform a search again.', 'error')
+        return redirect(url_for('home'))
 
-@app.route("/update_server", methods=['POST'])
-def webhook():
-    if request.method == 'POST':
-        repo = git.Repo('/home/CrowdSync/CrowdSync')
-        origin = repo.remotes.origin
-        origin.pull()
-        return 'Updated PythonAnywhere successfully', 200
-    else:
-        return 'Wrong event type', 400
+    num_events = event_info['num_events']
+    max_page = (num_events + 19) // 20  # Calculate maximum page number
+
+    # Adjust pageNumber to ensure it does not exceed max_page
+    pageNumber = min(pageNumber, max_page)
+
+    zip_city = event_info['zip_city']
+    start_date = event_info['start_date']
+    end_date = event_info['end_date']
+    query = event_info['query']
+    
+    errorstring = validateInput(zip_city, start_date, end_date)
+    if errorstring:
+        return render_template('results.html', error=errorstring)
+
+    event_info = search_events(zip_city, start_date, end_date, query, pageNumber)
+    session['event_info'] = event_info
+
+    # Redirect to results without pageNumber if 'prevPage' or 'nextPage' button is clicked
+    if 'prevPage' in request.form or 'nextPage' in request.form:
+        return redirect(url_for('results'))
+
+    return redirect(url_for('results', page=pageNumber))
 
 
 if __name__ == '__main__':
     app.run(debug=True)
-
