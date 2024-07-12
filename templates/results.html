@@ -71,23 +71,30 @@
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('paginationForm').addEventListener('submit', function(event) {
                 event.preventDefault(); // Prevent default form submission
-
+    
                 const buttonValue = event.submitter.value;
                 let pageNumber;
-
+    
                 if (buttonValue === 'prevPage') {
                     pageNumber = document.getElementById('prevPage').value;
                 } else if (buttonValue === 'nextPage') {
                     pageNumber = document.getElementById('nextPage').value;
                 } else {
-                    pageNumber = document.getElementById('pageNumber').value;
+                    pageNumber = document.getElementById('pageNumber').value.trim(); // Trim to remove any extra spaces
                 }
-
+    
+                // Validate that pageNumber is a positive integer
+                if (!pageNumber.match(/^[1-9]\d*$/)) {
+                    alert('Please enter a valid page number.');
+                    return;
+                }
+    
                 const url = `/results/${pageNumber}`;
                 window.location.href = url; // Redirect to the specified page number
             });
         });
-
     </script>
+    
+    
 </body>
 </html>
