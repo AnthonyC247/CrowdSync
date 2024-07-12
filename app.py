@@ -37,7 +37,6 @@ def format_date(value):
 
 app.jinja_env.filters['format_date'] = format_date
    
-# Default home page
 @app.route("/", methods=["GET", "POST"])
 @app.route("/home", methods=["GET", "POST"])
 def home():
@@ -52,10 +51,12 @@ def home():
             return render_template('home.html', error=errorstring)
 
         event_info = search_events(zip_city, start_date, end_date, query)
-        session['event_info'] = event_info
+        session['event_info'] = event_info  # Store event_info in session
         return redirect(url_for('results'))
 
     return render_template('home.html')
+
+
 
 @app.route("/results", methods=["GET", "POST"])
 @app.route("/results/<int:page>", methods=["GET", "POST"])
@@ -67,16 +68,40 @@ def results(page=1):
             page += 1
         return redirect(url_for("pagination", pageNumber=page))
     
-    # Handle GET request to show results page
+    # Ensure event_info is in the session and retrieve it
     event_info = session.get('event_info')
-    return render_template('results.html', event_info=event_info, page=page)
+    if not event_info:
+        flash('Event information not found. Please perform a search again.', 'error')
+        return redirect(url_for('home'))
+
+    num_events = event_info.get('num_events', 0)
+    max_page = (num_events + 19) // 20  # Calculate maximum page number
+
+    # Adjust page number to ensure it does not exceed max_page
+    page = min(page, max_page)
+
+    # Fetch events for the current page
+    event_list = event_info.get('event_list', {}).get(page, [])
+
+    return render_template('results.html', event_list=event_list, event_info=event_info, page=page, max_page=max_page)
 
 @app.route("/results/<int:pageNumber>", methods=["POST"])
 def pagination(pageNumber):
-    zip_city = session['event_info']['zip_city']
-    start_date = session['event_info']['start_date']
-    end_date = session['event_info']['end_date']
-    query = session['event_info']['query']
+    event_info = session.get('event_info')
+    if not event_info:
+        flash('Event information not found. Please perform a search again.', 'error')
+        return redirect(url_for('home'))
+
+    num_events = event_info['num_events']
+    max_page = (num_events + 19) // 20  # Calculate maximum page number
+
+    # Adjust pageNumber to ensure it does not exceed max_page
+    pageNumber = min(pageNumber, max_page)
+
+    zip_city = event_info['zip_city']
+    start_date = event_info['start_date']
+    end_date = event_info['end_date']
+    query = event_info['query']
     
     errorstring = validateInput(zip_city, start_date, end_date)
     if errorstring:
