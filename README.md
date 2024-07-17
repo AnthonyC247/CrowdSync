@@ -20,7 +20,7 @@ CrowdSync is a Flask-based web application designed to help users find and explo
 
 ## Usage
 #### For using the deployed project
-1. Navigate to the CrowdSync homepage.
+1. Navigate to the [CrowdSync](https://crowdsync.pythonanywhere.com/) homepage.
 2. Enter the required details in the search form:
   -City or Zipcode
   -Start Date (MM/DD/YYYY)
@@ -34,7 +34,7 @@ CrowdSync is a Flask-based web application designed to help users find and explo
 #### For running locally / deployed site is down
 1. **Clone the repository:**
    ```sh
-   git clone https://github.com/your-username/crowdsync.git
+   git clone https://github.com/AnthonyC247/crowdsync.git
    cd crowdsync
 2. **Install dependencies:**
    Ensure you have Python and pip installed. Then run:
